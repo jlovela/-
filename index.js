@@ -1,16 +1,18 @@
-const { createserver } = require("http")
-const app = repuire("./app")
-const {server} = repuire("./app")
-require("dotenv"). config();
+const { createServer } = require("http");
+const app = require("./app");
+const mongoose = require("mongoose");
+const { Server } = require("socket.io");
+require("dotenv").config();
 
-const http server = createserver(app)
-const io = new server(httpserver, {
-    ocors : {
-        origin: "http:localhost:3000",
-    },
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    cors : {
+        origin: "http://localhost:3000",
+    },ㅓ
 });
 
-repuire("./utils/io")(io)
-httpserver. listen(process.env.PORT, () => {
-    consol.log("server listening onpart , process.env.PORT");
+require ("./utils/io")(io);
+
+httpServer.listen(process.env.PORT, () => {
+    console.log(`Server listening on port ${process.env.PORT}`);
 });
