@@ -1,10 +1,21 @@
-module.exports = function(io) {
+const userController = require("../Controllers/user.controller");
 
-io.on("connection", async (socket)=>{
+module.exports = function(io) {
+  io.on("connection", async (socket) => {
     console.log("client us connected", socket.id);
 
-    socket. on("disconnnect", () => {
-        console.log("user is disconnectd");
+    socket.on("login", async (userName, cb) => {
+      // 유저정보를 저장
+      try {
+        const user = await userController.saveUser(userName, socket.id);
+        cb({ ok: true, data: user });
+      } catch (error) {
+        cb({ ok: false, error: error.message });
+      }
     });
-});
+
+    socket.on("disconnect", () => {
+      console.log("user is disconnected");
+    });
+  });
 };
